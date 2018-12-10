@@ -31,6 +31,9 @@ public class Element {
     @Column(name = "gender")
     private String gender;
 
+    @Column(name = "color")
+    private Long colorId;
+
     @Column(name = "creation_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;
