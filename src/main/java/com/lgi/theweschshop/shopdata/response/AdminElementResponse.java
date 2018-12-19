@@ -2,6 +2,8 @@ package com.lgi.theweschshop.shopdata.response;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class AdminElementResponse {
 
@@ -9,14 +11,12 @@ public class AdminElementResponse {
 
     private String name;
 
-    private String type;
+    private IdNameDto type;
 
-    private String color;
-
-    private String size;
+    private IdNameDto color;
 
     private String gender;
 
-    private Long amount;
+    private List<SizeAmountResponseDto> sizeAmount;
 
 }

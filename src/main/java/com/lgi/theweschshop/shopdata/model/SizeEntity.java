@@ -1,8 +1,6 @@
 package com.lgi.theweschshop.shopdata.model;
 
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -12,6 +10,8 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(schema = "tws_storage", name = "size_table")
 public class SizeEntity {
 
