@@ -1,5 +1,6 @@
 package com.lgi.theweschshop.shopdata.model;
 
+import com.lgi.theweschshop.shopdata.enums.Gender;
 import com.lgi.theweschshop.shopdata.response.AdminElementResponse;
 import com.lgi.theweschshop.shopdata.response.IdNameDto;
 import com.lgi.theweschshop.shopdata.response.SizeAmountResponseDto;
@@ -7,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -36,13 +38,12 @@ public class Element {
     @Column(name = "gender")
     private String gender;
 
-//    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    @JoinColumn(name = "color")
-//    private Color color;
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "color")
+    private Color color;
 
     @Column(name = "creation_date")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date creationDate;
+    private LocalDateTime creationDate;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "type")

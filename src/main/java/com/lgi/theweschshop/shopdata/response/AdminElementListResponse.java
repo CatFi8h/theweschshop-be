@@ -9,6 +9,6 @@ public class AdminElementListResponse {
 
     public List<AdminElementResponse> elementList;
 
-    public Integer itemsTotal;
+    public Long itemsTotal;
 
 }

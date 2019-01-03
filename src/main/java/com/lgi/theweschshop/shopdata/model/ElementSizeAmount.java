@@ -1,13 +1,14 @@
 package com.lgi.theweschshop.shopdata.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Getter
 @Setter
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "element_size_amount")
 public class ElementSizeAmount {
 
@@ -26,4 +27,9 @@ public class ElementSizeAmount {
     @JoinColumn(name = "size_id", nullable = false)
     private SizeEntity size;
 
+    public ElementSizeAmount(Integer amount, Element element, SizeEntity size) {
+        this.amount = amount;
+        this.element = element;
+        this.size = size;
+    }
 }

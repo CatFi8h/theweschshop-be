@@ -23,4 +23,7 @@ public class SizeEntity {
     @Column(name = "name")
     private String name;
 
+    public SizeEntity(String name) {
+        this.name = name;
+    }
 }

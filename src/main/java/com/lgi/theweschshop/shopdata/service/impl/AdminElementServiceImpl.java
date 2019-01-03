@@ -1,16 +1,24 @@
 package com.lgi.theweschshop.shopdata.service.impl;
 
 import com.lgi.theweschshop.shopdata.model.Element;
+import com.lgi.theweschshop.shopdata.model.ElementSizeAmount;
+import com.lgi.theweschshop.shopdata.model.SizeEntity;
+import com.lgi.theweschshop.shopdata.model.Type;
 import com.lgi.theweschshop.shopdata.repository.ElementRepository;
-import com.lgi.theweschshop.shopdata.response.AdminElementListResponse;
+import com.lgi.theweschshop.shopdata.request.CreateNewElementRequest;
+import com.lgi.theweschshop.shopdata.response.IdDto;
 import com.lgi.theweschshop.shopdata.service.AdminElementService;
+import com.lgi.theweschshop.shopdata.service.SizeEntityService;
+import com.lgi.theweschshop.shopdata.service.TypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.HashSet;
 
 @Service
 public class AdminElementServiceImpl implements AdminElementService {
@@ -18,19 +26,46 @@ public class AdminElementServiceImpl implements AdminElementService {
     @Autowired
     private ElementRepository elementRepository;
 
+    @Autowired
+    private SizeEntityService sizeEntityService;
+
+    @Autowired
+    private TypeService typeService;
+
     @Override
-    public List<Element> getElementListForAdmin(Integer offset, Integer page) {
-        Pageable pageable = PageRequest.of(offset, page);
+    public Page<Element> getElementListForAdmin(Integer offset, Integer page) {
+        Pageable pageable = PageRequest.of(page, offset);
 
         Page<Element> allByPage = elementRepository.findAllByPage(pageable);
 
-        List<Element> content = allByPage.getContent();
+        return allByPage;
+    }
 
-        Long totalElements = allByPage.getTotalElements();
+    @Override
+    public IdDto addNewElement(CreateNewElementRequest request) {
 
-        AdminElementListResponse adminElementListResponse = new AdminElementListResponse();
+        Element element = new Element();
 
-        return content;
+        String requestSize = request.getSize();
+
+        SizeEntity size = sizeEntityService.getSizeEntityByName(requestSize).orElseGet(() -> sizeEntityService.save(new SizeEntity(requestSize)));
+
+        ElementSizeAmount elementSizeAmount = new ElementSizeAmount(request.getAmount(), element, size);
+        element.setElementSizeAmounts(new HashSet<>(Arrays.asList(elementSizeAmount)));
+
+        String requestType = request.getType();
+
+        Type type = typeService.findTypeByName(requestType).orElseGet(() -> typeService.save(new Type(request.getType())));
+
+        element.setCreationDate(LocalDateTime.now());
+
+        element.setType(type);
+
+        element.setGender(request.getGender());
+
+        Element savedElement = elementRepository.save(element);
+
+        return new IdDto(savedElement.getId());
     }
 
 }
