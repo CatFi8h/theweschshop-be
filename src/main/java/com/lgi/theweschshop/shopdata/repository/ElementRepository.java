@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface ElementRepository extends JpaRepository<Element, Long> {
 
-    @Query("select e from Element e ")
-    Page<Element> findAllByPage(Pageable of);
+    @Query("select e from Element e where e.isDeleted = false")
+    Page<Element> findAllByPage(Pageable pageable);
 
 }

@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Optional;
 
 @Service
 public class AdminElementServiceImpl implements AdminElementService {
@@ -36,9 +37,7 @@ public class AdminElementServiceImpl implements AdminElementService {
     public Page<Element> getElementListForAdmin(Integer offset, Integer page) {
         Pageable pageable = PageRequest.of(page, offset);
 
-        Page<Element> allByPage = elementRepository.findAllByPage(pageable);
-
-        return allByPage;
+        return elementRepository.findAllByPage(pageable);
     }
 
     @Override
@@ -48,7 +47,8 @@ public class AdminElementServiceImpl implements AdminElementService {
 
         String requestSize = request.getSize();
 
-        SizeEntity size = sizeEntityService.getSizeEntityByName(requestSize).orElseGet(() -> sizeEntityService.save(new SizeEntity(requestSize)));
+        SizeEntity size = sizeEntityService.getSizeEntityByName(requestSize)
+                .orElseGet(() -> sizeEntityService.save(new SizeEntity(requestSize)));
 
         ElementSizeAmount elementSizeAmount = new ElementSizeAmount(request.getAmount(), element, size);
         element.setElementSizeAmounts(new HashSet<>(Arrays.asList(elementSizeAmount)));
@@ -66,6 +66,23 @@ public class AdminElementServiceImpl implements AdminElementService {
         Element savedElement = elementRepository.save(element);
 
         return new IdDto(savedElement.getId());
+    }
+
+    @Override
+    public Element getElementById(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException();
+        }
+        Optional<Element> optionalElement = elementRepository.findById(id);
+        Element element = optionalElement.orElseThrow(IllegalArgumentException::new);
+        return element;
+    }
+
+    @Override
+    public void removeElementById(Long id) {
+        Optional<Element> optionalElement = elementRepository.findById(id);
+        optionalElement.get().setIsDeleted(true);
+
     }
 
 }

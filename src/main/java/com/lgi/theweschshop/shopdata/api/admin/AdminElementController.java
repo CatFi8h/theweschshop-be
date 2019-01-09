@@ -1,12 +1,12 @@
 package com.lgi.theweschshop.shopdata.api.admin;
 
 
+import com.lgi.theweschshop.shopdata.model.Color;
 import com.lgi.theweschshop.shopdata.model.Element;
+import com.lgi.theweschshop.shopdata.model.Type;
 import com.lgi.theweschshop.shopdata.request.CreateNewElementRequest;
 import com.lgi.theweschshop.shopdata.request.GetAdminElementsRequest;
-import com.lgi.theweschshop.shopdata.response.AdminElementListResponse;
-import com.lgi.theweschshop.shopdata.response.AdminElementResponse;
-import com.lgi.theweschshop.shopdata.response.IdDto;
+import com.lgi.theweschshop.shopdata.response.*;
 import com.lgi.theweschshop.shopdata.service.AdminElementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -52,6 +52,30 @@ public class AdminElementController {
 
         return adminElementService.addNewElement(request);
 
+    }
+
+    @GetMapping(path = "element")
+    @ResponseBody
+    public AdminElementResponse getElementById(@Valid @PathVariable Long id) {
+        Element element = adminElementService.getElementById(id);
+        AdminElementResponse adminElementResponse = new AdminElementResponse();
+        adminElementResponse.setId(element.getId());
+        adminElementResponse.setGender(element.getGender());
+        Type type = element.getType();
+        adminElementResponse.setType(new IdNameDto(type.getId(), type.getName()));
+        Color color = element.getColor();
+        adminElementResponse.setColor(new IdNameDto(color.getId(), color.getName()));
+        element.getElementSizeAmounts().stream().map(e -> new SizeAmountResponseDto(new IdNameDto(e.getSize().getId(), e.getSize().getName()), e.getAmount())).collect(Collectors.toList());
+        adminElementResponse.setSizeAmount(
+                element.getElementSizeAmounts().stream()
+                        .map(e -> new SizeAmountResponseDto(new IdNameDto(e.getSize().getId(), e.getSize().getName()), e.getAmount()))
+                        .collect(Collectors.toList()));
+        return adminElementResponse;
+    }
+
+    @DeleteMapping(path = "element")
+    public void removeElementById(@Valid @PathVariable Long id) {
+        adminElementService.removeElementById(id);
     }
 
 

@@ -11,4 +11,9 @@ public interface AdminElementService {
     Page<Element> getElementListForAdmin(Integer offset, Integer page);
 
     IdDto addNewElement(CreateNewElementRequest request);
+
+    Element getElementById(Long id);
+
+    void removeElementById(Long id);
+
 }
