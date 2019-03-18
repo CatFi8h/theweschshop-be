@@ -10,7 +10,8 @@ import com.lgi.theweschshop.shopdata.response.IdDto;
 import com.lgi.theweschshop.shopdata.service.AdminElementService;
 import com.lgi.theweschshop.shopdata.service.SizeEntityService;
 import com.lgi.theweschshop.shopdata.service.TypeService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.lgi.theweschshop.shopdata.service.dto.AddElementRequestDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,16 +23,12 @@ import java.util.HashSet;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class AdminElementServiceImpl implements AdminElementService {
 
-    @Autowired
-    private ElementRepository elementRepository;
-
-    @Autowired
-    private SizeEntityService sizeEntityService;
-
-    @Autowired
-    private TypeService typeService;
+    private final ElementRepository elementRepository;
+    private final SizeEntityService sizeEntityService;
+    private final TypeService typeService;
 
     @Override
     public Page<Element> getElementListForAdmin(Integer offset, Integer page) {
@@ -41,27 +38,27 @@ public class AdminElementServiceImpl implements AdminElementService {
     }
 
     @Override
-    public IdDto addNewElement(CreateNewElementRequest request) {
+    public IdDto addNewElement(AddElementRequestDto elementDto) {
 
         Element element = new Element();
 
-        String requestSize = request.getSize();
+        String requestSize = elementDto.getSize();
 
         SizeEntity size = sizeEntityService.getSizeEntityByName(requestSize)
                 .orElseGet(() -> sizeEntityService.save(new SizeEntity(requestSize)));
 
-        ElementSizeAmount elementSizeAmount = new ElementSizeAmount(request.getAmount(), element, size);
+        ElementSizeAmount elementSizeAmount = new ElementSizeAmount(elementDto.getAmount(), element, size);
         element.setElementSizeAmounts(new HashSet<>(Arrays.asList(elementSizeAmount)));
 
-        String requestType = request.getType();
+        String requestType = elementDto.getType();
 
-        Type type = typeService.findTypeByName(requestType).orElseGet(() -> typeService.save(new Type(request.getType())));
+        Type type = typeService.findTypeByName(requestType).orElseGet(() -> typeService.save(new Type(elementDto.getType())));
 
         element.setCreationDate(LocalDateTime.now());
 
         element.setType(type);
 
-        element.setGender(request.getGender());
+        element.setGender(elementDto.getGender());
 
         Element savedElement = elementRepository.save(element);
 

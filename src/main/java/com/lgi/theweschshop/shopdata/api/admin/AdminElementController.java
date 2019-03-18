@@ -8,6 +8,7 @@ import com.lgi.theweschshop.shopdata.request.CreateNewElementRequest;
 import com.lgi.theweschshop.shopdata.request.GetAdminElementsRequest;
 import com.lgi.theweschshop.shopdata.response.*;
 import com.lgi.theweschshop.shopdata.service.AdminElementService;
+import com.lgi.theweschshop.shopdata.service.dto.AddElementRequestDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -50,7 +51,17 @@ public class AdminElementController {
     @ResponseStatus(HttpStatus.CREATED)
     public IdDto addElement(@Valid CreateNewElementRequest request) {
 
-        return adminElementService.addNewElement(request);
+        AddElementRequestDto build = AddElementRequestDto.builder()
+                .amount(request.getAmount())
+                .color(request.getColor())
+                .gender(request.getGender())
+                .description(request.getDescription())
+                .price(request.getPrice())
+                .name(request.getName())
+                .type(request.getType())
+                .build();
+
+        return adminElementService.addNewElement(build);
 
     }
 
