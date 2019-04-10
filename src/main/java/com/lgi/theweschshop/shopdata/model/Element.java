@@ -1,6 +1,5 @@
 package com.lgi.theweschshop.shopdata.model;
 
-import com.lgi.theweschshop.shopdata.enums.Gender;
 import com.lgi.theweschshop.shopdata.response.AdminElementResponse;
 import com.lgi.theweschshop.shopdata.response.IdNameDto;
 import com.lgi.theweschshop.shopdata.response.SizeAmountResponseDto;
@@ -9,7 +8,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;

@@ -21,4 +21,7 @@ public interface ElementRepository extends JpaRepository<Element, Long> {
     @Query("select e from Element e where e.isDeleted = false ")
     Page<Element> findListOfElements(Pageable pageable);
 
+    @Query("update Element e set e.isDeleted = true where e.id = :id")
+    Element markElementAsDeletedById(@Param("id")Long id);
+
 }

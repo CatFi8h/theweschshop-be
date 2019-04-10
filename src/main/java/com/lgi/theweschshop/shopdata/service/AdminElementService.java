@@ -13,8 +13,8 @@ public interface AdminElementService {
 
     IdDto addNewElement(AddElementRequestDto request);
 
-    Element getElementById(Long id);
+    Element getElementById(long id);
 
-    void removeElementById(Long id);
+    void removeElementById(long id);
 
 }
