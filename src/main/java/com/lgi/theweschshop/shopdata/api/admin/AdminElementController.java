@@ -49,9 +49,7 @@ public class AdminElementController {
     @ResponseBody
     @ResponseStatus(HttpStatus.CREATED)
     public IdDto addElement(@Valid CreateNewElementRequest request) {
-
         return adminElementService.addNewElement(request);
-
     }
 
     @GetMapping(path = "element")

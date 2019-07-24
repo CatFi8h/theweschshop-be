@@ -10,6 +10,7 @@ import com.lgi.theweschshop.shopdata.response.IdDto;
 import com.lgi.theweschshop.shopdata.service.AdminElementService;
 import com.lgi.theweschshop.shopdata.service.SizeEntityService;
 import com.lgi.theweschshop.shopdata.service.TypeService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,16 +23,14 @@ import java.util.HashSet;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class AdminElementServiceImpl implements AdminElementService {
 
-    @Autowired
-    private ElementRepository elementRepository;
+    private final ElementRepository elementRepository;
 
-    @Autowired
-    private SizeEntityService sizeEntityService;
+    private final SizeEntityService sizeEntityService;
 
-    @Autowired
-    private TypeService typeService;
+    private final TypeService typeService;
 
     @Override
     public Page<Element> getElementListForAdmin(Integer offset, Integer page) {

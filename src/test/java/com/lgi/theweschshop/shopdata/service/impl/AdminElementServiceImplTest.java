@@ -9,8 +9,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 public class AdminElementServiceImplTest {
 
-    @Autowired
-    AdminElementServiceImpl adminElementService = new AdminElementServiceImpl();
+//    @Autowired
+//    AdminElementServiceImpl adminElementService = new AdminElementServiceImpl();
 
     @Before
     public void init() {
