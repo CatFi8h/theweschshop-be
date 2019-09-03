@@ -2,8 +2,10 @@ package com.lgi.theweschshop.shopdata.api.admin;
 
 import com.lgi.theweschshop.shopdata.model.*;
 import com.lgi.theweschshop.shopdata.service.AdminElementService;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -35,7 +37,7 @@ public class AdminElementControllerTest {
     private AdminElementService adminElementService;
 
     @Test
-    public void test() throws Exception {
+    public void getAdminElementList() throws Exception {
 
         String name = "name";
         int amount = 10;
@@ -67,7 +69,7 @@ public class AdminElementControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.elementList").exists())
-                .andExpect(jsonPath("$.elementList", hasSize(1)))
+                .andExpect(jsonPath("$.elementList", hasSize(2)))
                 .andExpect(jsonPath("$.elementList[0].id", is(1)))
                 .andExpect(jsonPath("$.elementList[0].name", is(name)))
                 .andExpect(jsonPath("$.elementList[0].gender", is(gender)))
